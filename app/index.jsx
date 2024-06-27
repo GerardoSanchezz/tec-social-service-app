@@ -44,7 +44,7 @@ export default function App() {
 
           <CustomButton
             title="Inicie sesión para continuar"
-            handlePress={() => router.push("/sign-in")}
+            handlePress={() => router.push("/catalog")}
             containerStyles="w-full mt-7"
           />
         </View>
