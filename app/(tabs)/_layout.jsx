@@ -4,6 +4,7 @@ import { Image, Text, View } from "react-native";
 
 import { icons } from "../../constants";
 import { Loader } from "../../components";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
@@ -25,9 +26,9 @@ const TabIcon = ({ icon, color, name, focused }) => {
 };
 
 const TabLayout = () => {
-  const { loading, isLogged } = true;
+  const { loading, isLogged } = useGlobalContext();
 
-  if (!loading && !isLogged) return <Redirect href="/catalog" />;
+  if (!loading && !isLogged) return <Redirect href="/sign-in" />;
 
   return (
     <>
@@ -54,6 +55,21 @@ const TabLayout = () => {
                 icon={icons.home}
                 color={color}
                 name="Home"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="Mis_Ofertas"
+          options={{
+            title: "Mis_Ofertas",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.Mis_Ofertas}
+                color={color}
+                name="Mis_Ofertas"
                 focused={focused}
               />
             ),

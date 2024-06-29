@@ -5,11 +5,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "../constants";
 import { CustomButton, Loader } from "../components";
+import { useGlobalContext } from "../context/GlobalProvider";
 
+const Welcome = () => {
+  const { loading, isLogged } = useGlobalContext();
 
-export default function App() {
+  if (!loading && isLogged) return <Redirect href="/home" />;
+  
   return (
     <SafeAreaView className="bg-primary h-full">
+      <Loader isLoading={loading} />
 
       <ScrollView
         contentContainerStyle={{
@@ -44,7 +49,7 @@ export default function App() {
 
           <CustomButton
             title="Inicie sesión para continuar"
-            handlePress={() => router.push("/catalog")}
+            handlePress={() => router.push("/sign-in")}
             containerStyles="w-full mt-7"
           />
         </View>
@@ -54,3 +59,5 @@ export default function App() {
     </SafeAreaView>
   );
 };
+
+export default Welcome;
