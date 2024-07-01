@@ -8,6 +8,10 @@ import { createUser } from "../../lib/appwrite";
 import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
+const validateEmail = (email) => { // is adding the RE in code a security risk? /s
+  const emailRegex = /\b[A-Za-z0-9._%+-]+@tec\.mx\b/;
+  return emailRegex.test(email);
+};
 const SignUp = () => {
   const { setUser, setIsLogged } = useGlobalContext();
 
@@ -21,7 +25,15 @@ const SignUp = () => {
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
+      return;
     }
+
+    if (!validateEmail(form.email)) { // Appwrite checks another time for valid email so were safe
+      Alert.alert("Error", "Please enter a valid Tec de Monterrey email address");
+      return;
+    }
+
+    // We should add a security code implementation so we make sure the tec emails are real emails
 
     setSubmitting(true);
     try {
@@ -36,7 +48,6 @@ const SignUp = () => {
       setSubmitting(false);
     }
   };
-
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
