@@ -7,6 +7,7 @@ import { images } from "../../constants";
 import { CustomButton, FormField } from "../../components";
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
 const SignIn = () => {
   const { setUser, setIsLogged } = useGlobalContext();;
@@ -40,11 +41,17 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
+      <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={0}
+    >
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 my-4"
           style={{
             minHeight: Dimensions.get("window").height - 200,
+            paddingBottom: 200
           }}
         >
           <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center', marginTop: -20 }}>
@@ -95,6 +102,7 @@ const SignIn = () => {
           </View>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

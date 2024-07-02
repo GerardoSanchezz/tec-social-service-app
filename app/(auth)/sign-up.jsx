@@ -7,6 +7,7 @@ import { images } from "../../constants";
 import { createUser } from "../../lib/appwrite";
 import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
 const validateEmail = (email) => { // is adding the RE in code a security risk? /s
   const emailRegex = /\b[A-Za-z0-9._%+-]+@tec\.mx\b/;
@@ -50,6 +51,10 @@ const SignUp = () => {
   };
   return (
     <SafeAreaView className="bg-primary h-full">
+      <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
       <ScrollView>
         <View
           className="w-full flex justify-center h-full px-4 my-2"
@@ -111,6 +116,7 @@ const SignUp = () => {
           </View>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
