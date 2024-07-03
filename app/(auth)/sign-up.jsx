@@ -15,6 +15,11 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
+const validatePassword = (password) => {
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&+\-_.])[A-Za-z\d@$!%*?&+\-_.]{8,}$/;
+  return passwordRegex.test(password);
+};
+
 const SignUp = () => {
   const { setUser, setIsLogged } = useGlobalContext();
   const router = useRouter();
@@ -34,6 +39,11 @@ const SignUp = () => {
 
     if (!validateEmail(form.email)) {
       Alert.alert("Error", "Please enter a valid Tec de Monterrey email address");
+      return;
+    }
+
+    if (!validatePassword(form.password)) {
+      Alert.alert("Error", "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character");
       return;
     }
 
