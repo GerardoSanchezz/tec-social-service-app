@@ -1,23 +1,23 @@
-import { useState, useEffect} from "react";
+import { useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image, Text, View, Flatlist } from "react-native";
+import { Image, Text, View, FlatList} from "react-native";
 
 import { images } from "../../constants";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { SearchInput } from "../../components";
+import { CustomButton, SearchInput } from "../../components";
 
 const Home = () => {
-  const { user } = useGlobalContext();
-  const { data, setData } = useState([]);
+  const { user, data } = useGlobalContext();
 
-  useEffect(() => {
-    fetch("http://localhost:3000/api/data")
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
+  // Data fetch is being done in the GlobalProvider, is this the best approach?
+  /* Bugs to fix 
+    1. Bug in user registration in verification process, if you mess up during input, you wont be able to verify the code,
+    as the error message from input validation is shown and doesnt allow you to continue.
+    2. For some reason i cant see the components bellow search input.
+    3. I think some icons were lost, as some dont load in this page and others idk why.
+  */
 
-  const renderItem = ({ item }) => ( 
+  const renderItem = ({ item }) => (
     <View className="bg-secondary p-4 mb-4 rounded-lg">
       <Text className="text-lg font-psemibold text-white">{item.field1}</Text>
       <Text className="text-md font-pregular text-gray-200">{item.field2}</Text>
@@ -47,17 +47,16 @@ const Home = () => {
         </View>
 
         <SearchInput />
-
         <View className="w-full flex-1 pt-5 pb-8">
           <Text className="text-lg font-pregular text-gray-100 mb-3">
             Ofertas de servicio social
           </Text>
-          <Flatlist>
+          <FlatList
             data={data}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-          </Flatlist>
+          />
         </View>
       </View>
     </SafeAreaView>
