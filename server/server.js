@@ -36,11 +36,11 @@ async function run() {
     }
  }
 run().catch(console.dir);
-db = client.db("sample_analytics");
+db = client.db("OFERTASERVICIOSOCIAL");
 
 app.get('/api/data', async (req, res) => {
     try {
-      const collection = db.collection("accounts"); // Test collection
+      const collection = db.collection("FJ2024"); // Test collection
       const data = await collection.find({}).toArray();
       res.status(200).json(data);
     } catch (error) {
@@ -49,7 +49,7 @@ app.get('/api/data', async (req, res) => {
     }
   });
 
-// It works on, go to http://localhost:3000/api/data
+// It works, go to http://localhost:3000/api/data
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
