@@ -5,6 +5,7 @@ import {
   Dimensions,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Icon from "react-native-feather";
@@ -22,6 +23,7 @@ export default function EmailVerification() {
   const [errorMessage, setErrorMessage] = useState(false);
   const [inputCode, setInputCode] = useState("");
   const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const user_email = route.params?.email;
   const username = route.params?.username;
@@ -74,6 +76,7 @@ export default function EmailVerification() {
   }, []);
 
   const validateCode = async () => {
+    setIsLoading(true);
     if (inputCode == code) {
       try {
         const result = await createUser(user_email, password, username);
@@ -82,9 +85,12 @@ export default function EmailVerification() {
         router.replace("/home");
       } catch (error) {
         Alert.alert("Error", error.message);
+      } finally {
+        setIsLoading(false); 
       }
     } else {
       Alert.alert("Error", "The input code does not match the generated code");
+      setIsLoading(false);
     }
   };
       
@@ -163,7 +169,11 @@ export default function EmailVerification() {
             justifyContent: "center",
           }}
         >
-          <Text className="text-white text-center text-base">Validar</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text className="text-white text-center text-base">Validar</Text>
+          )}
         </TouchableOpacity>
 
         <Text
