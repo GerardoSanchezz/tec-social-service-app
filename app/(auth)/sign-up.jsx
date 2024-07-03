@@ -96,7 +96,6 @@ const SignUp = () => {
               value={form.password}
               handleChangeText={(e) => setForm({ ...form, password: e })}
               otherStyles="mt-7 mb-3"
-              secureTextEntry 
             />
 
             <CustomButton
