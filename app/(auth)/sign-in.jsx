@@ -62,7 +62,6 @@ const SignIn = () => {
             />
           </View>
 
-
           <Text className="text-2xl font-semibold text-white mt-2 font-psemibold">
             Ingresa con tu cuenta.
           </Text>
