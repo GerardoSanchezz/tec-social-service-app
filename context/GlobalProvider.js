@@ -9,7 +9,7 @@ const GlobalProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [data, setData] = useState([]);
   useEffect(() => {
     getCurrentUser()
       .then((res) => {
@@ -29,6 +29,21 @@ const GlobalProvider = ({ children }) => {
       });
   }, []);
 
+  useEffect(() => { // Ultra important, change localhost to your ipv4 address, if not, you will get Error fetching data: [TypeError: Network request failed]
+    fetch("http://localhost:3000/api/data")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Social Service Offer has been fetched succesfully"); // Log fetched data
+        setData(data);
+      })
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -37,6 +52,8 @@ const GlobalProvider = ({ children }) => {
         user,
         setUser,
         loading,
+        data,
+        setData,
       }}
     >
       {children}
