@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 
 const OffersCard = ({ 
   nombreProyecto, 
@@ -9,6 +9,9 @@ const OffersCard = ({
   contacto, 
   cupo 
 }) => {
+  const handleViewOffer = () => {
+    navigation.navigate('OfferView', { offer });
+  };
   return (
     <View className="flex flex-col items-center justify-center px-4 mb-14 border border-gray-300 rounded-lg p-4 bg-gray-900">
       <Text className="font-semibold text-lg text-white text-center" numberOfLines={1}>
@@ -34,6 +37,7 @@ const OffersCard = ({
         <Text className="text-sm text-white text-center">
           <Text className="font-bold">Cupo:</Text> {cupo}
         </Text>
+        <Button title="Ver Detalles" onPress={handleViewOffer} />
       </View>
     </View>
   );

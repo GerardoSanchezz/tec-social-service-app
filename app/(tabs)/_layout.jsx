@@ -76,6 +76,21 @@ const TabLayout = () => {
           }}
         />
         <Tabs.Screen
+          name="OfferView"
+          options={{
+            title: "OfferView",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.Mis_Ofertas}
+                color={color}
+                name="OfferView"
+                focused={focused}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="profile"
           options={{
             title: "Profile",
