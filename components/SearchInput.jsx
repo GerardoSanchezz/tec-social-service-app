@@ -1,12 +1,25 @@
-import { useState } from "react";
-import { router, usePathname } from "expo-router";
+import React, { useState } from "react";
 import { View, TouchableOpacity, Image, TextInput, Alert } from "react-native";
-
 import { icons } from "../constants";
 
-const SearchInput = ({ initialQuery }) => {
-  const pathname = usePathname();
+const SearchInput = ({ initialQuery, onSearch }) => {
   const [query, setQuery] = useState(initialQuery || "");
+
+  const handleSearch = () => {
+    if (query === "") {
+      onSearch(null); 
+    } else {
+      onSearch(query);
+    }
+  };
+
+  const handleChangeText = (text) => {
+    setQuery(text);
+  };
+
+  const handleSearchButtonPress = () => {
+    handleSearch();
+  };
 
   return (
     <View className="flex flex-row items-center space-x-4 w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary">
@@ -15,21 +28,11 @@ const SearchInput = ({ initialQuery }) => {
         value={query}
         placeholder="Busca una oferta"
         placeholderTextColor="#CDCDE0"
-        onChangeText={(e) => setQuery(e)}
+        onChangeText={handleChangeText}
+        returnKeyType="search"
+        onSubmitEditing={handleSearchButtonPress} 
       />
-
-      <TouchableOpacity
-        onPress={() => {
-          if (query === "")
-            return Alert.alert(
-              "Missing Query",
-              "Please input something to search results across database"
-            );
-
-          if (pathname.startsWith("/search")) router.setParams({ query });
-          else router.push(`/search/${query}`);
-        }}
-      >
+      <TouchableOpacity onPress={handleSearchButtonPress}>
         <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
       </TouchableOpacity>
     </View>
