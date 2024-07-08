@@ -1,21 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Image, RefreshControl, Text, View } from "react-native";
+import { FlatList, Image, RefreshControl, Text, View, TextInput, TouchableOpacity, Alert} from "react-native";
 import { images } from "../../constants";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { EmptyState, SearchInput, OffersCard } from "../../components";
 
+import { icons } from "../../constants";
+
+
+
 const Home = () => {
   const { user, data } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
+  const [userInput, setUserInput] = useState("");
+  const [filteredData, setFilteredData] = useState(data);
+
 
   console.log("Data in Home component:", data); // Log data to ensure it's being received
 
   const onRefresh = async () => {
+    setUserInput(userInput)
     setRefreshing(true);
-    await refetch();
     setRefreshing(false);
   };
+
+  const handleSearch = (text) => {
+    if(text){
+      const filtered = data.filter(item =>
+        item["NOMBRE DEL PROYECTO"].toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }else{
+      setFilteredData(data);
+    }
+  };
+
 
   const renderItem = ({ item }) => (
     <OffersCard
@@ -32,7 +51,7 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={data}
+        data={filteredData}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
         ListHeaderComponent={() => (
@@ -54,7 +73,16 @@ const Home = () => {
                 />
               </View>
             </View>
-            <SearchInput />
+            <View className="flex flex-row items-center space-x-4 w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary">
+              <TextInput
+                className="text-base mt-0.5 text-white flex-1 font-pregular"
+                value={userInput}
+                placeholder="Busca una oferta"
+                placeholderTextColor="#CDCDE0"
+                onChangeText={(text) => {setUserInput(text); handleSearch(text)}}
+              />
+                <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
+            </View>
           </View>
         )}
         ListEmptyComponent={() => (

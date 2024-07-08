@@ -30,7 +30,7 @@ const GlobalProvider = ({ children }) => {
   }, []);
 
   useEffect(() => { // Ultra important, change localhost to your ipv4 address, if not, you will get Error fetching data: [TypeError: Network request failed]
-    fetch("http://localhost:3000/api/data")
+    fetch("http://192.168.1.4:3000/api/data")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
