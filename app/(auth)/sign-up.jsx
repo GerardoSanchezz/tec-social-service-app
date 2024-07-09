@@ -3,12 +3,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Alert, Image } from "react-native";
 import { useRouter } from "expo-router"; // Cambiar el import de router
 import { KeyboardAvoidingView, Platform, Dimensions } from "react-native";
-import { Link } from "expo-router"; 
-
+import { Link } from "expo-router";
+import axios from 'axios'; 
 import { images } from "../../constants";
-import { createUser, sendVerificationEmail } from "../../lib/appwrite"; // Importar la función para enviar el correo de verificación
 import { CustomButton, FormField } from "../../components";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { authenticateUser } from "../../utils/auth";
 
 const validateEmail = (email) => {
   const emailRegex = /\b[A-Za-z0-9._%+-]+@tec\.mx\b/;
@@ -49,10 +49,20 @@ const SignUp = () => {
 
     setSubmitting(true);
     try {
-      router.replace({
-        pathname: "/email-verification",
-        params: { email: form.email, username: form.username, password: form.password }
+      const response = await axios.post('http://localhost:3000/api/users/create', {
+        username: form.username,
+        email: form.email,
+        password: form.password,
       });
+      if (response.status === 201) {
+        const authSuccess = await authenticateUser(form.email, form.password);
+        if (authSuccess) {
+          router.replace({
+            pathname: "/email-verification",
+            params: { email: form.email, username: form.username, password: form.password }
+          });
+        }
+      }
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {

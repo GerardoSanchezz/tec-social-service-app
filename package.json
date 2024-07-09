@@ -12,6 +12,7 @@
     "@emailjs/browser": "^3.11.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@types/react": "~18.2.79",
+    "axios": "^1.7.2",
     "emailjs-com": "^3.2.0",
     "expo": "^51.0.0",
     "expo-av": "~14.0.5",

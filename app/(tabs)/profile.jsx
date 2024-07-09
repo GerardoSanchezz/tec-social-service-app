@@ -1,28 +1,18 @@
-import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Image, TouchableOpacity } from "react-native";
 
 import { icons } from "../../constants";
-import { signOut } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { InfoBox } from "../../components";
 
 const Profile = () => {
-  const { user, setUser, setIsLogged } = useGlobalContext();
-
-  const logout = async () => {
-    await signOut();
-    setUser(null);
-    setIsLogged(false);
-
-    router.replace("/sign-in");
-  };
+  const { user, logout } = useGlobalContext();
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="w-full flex justify-center items-center mt-6 mb-12 px-4">
         <TouchableOpacity
-          onPress={logout}
+          onPress={logout} 
           className="flex w-full items-end mb-10"
         >
           <Image
