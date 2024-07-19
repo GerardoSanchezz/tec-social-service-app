@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Image, RefreshControl, Text, View } from "react-native";
+import { Image, RefreshControl, Text, View } from "react-native";
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { images } from "../../constants";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { EmptyState, SearchInput, OffersCard } from "../../components";
@@ -17,21 +18,23 @@ const Home = () => {
     setRefreshing(false);
   };
 
-  const renderItem = ({ item }) => (
-    <OffersCard
-      nombreProyecto={item["NOMBRE DEL PROYECTO"]}
-      modalidad={item["MODALIDAD"]}
-      carrerasPreferenciales={item["CARRERAS PREFERENCIALES"]}
-      horasMaximas={item["HORAS MÁXIMAS A ACREDITAR"]}
-      horario={item["HORARIO"]}
-      contacto={item["DATOS DE CONTACTO CON LA OSF"]}
-      cupo={item["CUPO DE ESTUDIANTES"]}
-    />
+  const renderItem = ({ item, index }) => (
+    <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
+      <OffersCard
+        nombreProyecto={item["NOMBRE DEL PROYECTO"]}
+        modalidad={item["MODALIDAD"]}
+        carrerasPreferenciales={item["CARRERAS PREFERENCIALES"]}
+        horasMaximas={item["HORAS MÁXIMAS A ACREDITAR"]}
+        horario={item["HORARIO"]}
+        contacto={item["DATOS DE CONTACTO CON LA OSF"]}
+        cupo={item["CUPO DE ESTUDIANTES"]}
+      />
+    </Animated.View>
   );
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <FlatList
+      <Animated.FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
