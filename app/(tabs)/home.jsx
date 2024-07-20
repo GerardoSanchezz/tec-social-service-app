@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 import { images } from "../../constants";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { EmptyState, OffersCard } from "../../components";
+import { EmptyState, OffersCard, FilterMenu} from "../../components";
 import SearchInput from "../../components/SearchInput";
 
 const Home = () => {
@@ -63,7 +63,10 @@ const Home = () => {
                 />
               </View>
             </View>
+
             <SearchInput initialQuery="" onSearch={handleSearch} />
+
+              <FilterMenu />
           </View>
         )}
         ListEmptyComponent={() => (
