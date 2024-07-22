@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image, RefreshControl, Text, View } from "react-native";
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -9,14 +9,45 @@ import { EmptyState, SearchInput, OffersCard } from "../../components";
 const Home = () => {
   const { user, data } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState(data);
+  const [filterCriteria] = useState(["NOMBRE DEL PROYECTO", "MODALIDAD", "CARRERAS PREFERENCIALES", "HORAS MÁXIMAS A ACREDITAR", "HORARIO", "CUPO DE ESTUDIANTES"]); // Add more criteria as needed
+  const [selectedFilter, setSelectedFilter] = useState(filterCriteria[0]);
+  
 
-  console.log("Data in Home component:", data); // Log data to ensure it's being received
+  //console.log("Data in Home component:", data); // Log data to ensure it's being received
 
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
     setRefreshing(false);
   };
+
+  useEffect(() => {
+    if (searchQuery) {
+      if (selectedFilter === "CUPO DE ESTUDIANTES") {
+        const filtered = data.filter(item => item[selectedFilter] <= parseInt(searchQuery)); // El cupo se busca de menor o igual a la query
+        setFilteredData(filtered);
+      }else{
+        const lowercasedQuery = searchQuery?.toLowerCase();
+        const filtered = data.filter(item =>
+          item[selectedFilter]?.toLowerCase().includes(lowercasedQuery)
+        );
+        setFilteredData(filtered);
+      }
+    } else {
+      setFilteredData(data);
+    }
+  }, [searchQuery, data, selectedFilter]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setSelectedFilter(newFilter);
+  };
+
 
   const renderItem = ({ item, index }) => (
     <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
@@ -49,13 +80,14 @@ const Home = () => {
     </Animated.View>
   );
 
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <Animated.FlatList
-        data={data}
+        data={filteredData}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        ListHeaderComponent={() => (
+        ListHeaderComponent={ // El fix solo era quitar la funcion de flecha de estos componentes, no entiendo porque pero funciona ahora
           <View className="flex my-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
               <View>
@@ -74,15 +106,15 @@ const Home = () => {
                 />
               </View>
             </View>
-            <SearchInput />
+            <SearchInput initialQuery={searchQuery} onSearch={handleSearch} filterCriteria={filterCriteria} onFilterChange={handleFilterChange} />
           </View>
-        )}
-        ListEmptyComponent={() => (
+        }
+        ListEmptyComponent={
           <EmptyState
             title="No hay datos"
             subtitle="No se encontraron proyectos de servicio social"
           />
-        )}
+        }
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
