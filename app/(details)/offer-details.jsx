@@ -1,11 +1,14 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ScrollView, Linking } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, ScrollView, Linking } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const OfferDetails = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const { params } = route;
+  const [expandedSections, setExpandedSections] = useState({});
 
   if (!params) {
     return (
@@ -15,81 +18,76 @@ const OfferDetails = () => {
     );
   }
 
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const renderSection = (label, content, icon) => (
+    <View style={styles.card}>
+      <View style={styles.cardHeader}>
+        <Icon name={icon} size={24} color="#4A90E2" />
+        <Text style={styles.label}>{label}</Text>
+      </View>
+      <Text style={styles.text}>{content}</Text>
+    </View>
+  );
+
+  const renderCollapsibleSection = (label, content, icon) => (
+    <View style={styles.card}>
+      <TouchableOpacity onPress={() => toggleSection(label)} style={styles.cardHeader}>
+        <Icon name={icon} size={24} color="#4A90E2" />
+        <Text style={styles.label}>{label}</Text>
+        <Icon name={expandedSections[label] ? 'expand-less' : 'expand-more'} size={24} color="#4A90E2" />
+      </TouchableOpacity>
+      {expandedSections[label] && <Text style={styles.text}>{content}</Text>}
+    </View>
+  );
+
   return (
-    <SafeAreaView className="bg-primary h-full p-3" >
-      <ScrollView >
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Icon name="arrow-back" size={24} color="#4A90E2" />
+        </TouchableOpacity>
         <Text style={styles.title}>Detalles de la Oferta</Text>
-        <Text style={styles.label}>Nombre del Proyecto:</Text>
-        <Text style={styles.text}>{params.nombreProyecto}</Text>
-
-        <Text style={styles.label}>Modalidad:</Text>
-        <Text style={styles.text}>{params.modalidad}</Text>
-
-        <Text style={styles.label}>Carreras Preferenciales:</Text>
-        <Text style={styles.text}>{params.carrerasPreferenciales}</Text>
-
-        <Text style={styles.label}>Horas Máximas a Acreditar:</Text>
-        <Text style={styles.text}>{params.horasMaximas}</Text>
-
-        <Text style={styles.label}>Horario:</Text>
-        <Text style={styles.text}>{params.horario}</Text>
-
-        <Text style={styles.label}>Contacto:</Text>
-        <Text style={styles.text}>{params.contacto}</Text>
-
-        <Text style={styles.label}>Cupo:</Text>
-        <Text style={styles.text}>{params.cupo}</Text>
-
-        <Text style={styles.label}>Clave:</Text>
-        <Text style={styles.text}>{params.clave}</Text>
-
-        <Text style={styles.label}>CRN:</Text>
-        <Text style={styles.text}>{params.crn}</Text>
-
-        <Text style={styles.label}>Grupo:</Text>
-        <Text style={styles.text}>{params.grupo}</Text>
-
-        <Text style={styles.label}>Organización:</Text>
-        <Text style={styles.text}>{params.organizacion}</Text>
-
-        <Text style={styles.label}>ODS:</Text>
-        <Text style={styles.text}>{params.ods}</Text>
-
-        <Text style={styles.label}>Dirección / Ubicación:</Text>
-        <Text style={styles.text}>{params.direccion}</Text>
-
-        <Text style={styles.label}>Ruta Desde el TEC:</Text>
-        <Text style={styles.text}>{params.rutaDesdeTec}</Text>
-
-        <Text style={styles.label}>KM de Distancia Desde el TEC:</Text>
-        <Text style={styles.text}>{params.kmDistancia}</Text>
-
-        <Text style={styles.label}>Tipo de Horarios:</Text>
-        <Text style={styles.text}>{params.tipoHorario}</Text>
-
-        <Text style={styles.label}>Población que se Atiende:</Text>
-        <Text style={styles.text}>{params.poblacion}</Text>
-
-        <Text style={styles.label}>Actividades a Realizar:</Text>
-        <Text style={styles.text}>{params.actividades}</Text>
-
-        <Text style={styles.label}>Entregable:</Text>
-        <Text style={styles.text}>{params.entregable}</Text>
-
-        <Text style={styles.label}>Notas Importantes:</Text>
-        <Text style={styles.text}>{params.notas}</Text>
-
-        <Text style={styles.label}>Link de Sitio Web:</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(params.linkWeb)}>
-            <Text style={[styles.text, { color: '#B2CAFC' }]}>{params.linkWeb}</Text>
+        
+        {renderSection('Nombre del Proyecto', params.nombreProyecto, 'work')}
+        {renderSection('Modalidad', params.modalidad, 'school')}
+        {renderSection('Carreras Preferenciales', params.carrerasPreferenciales, 'person')}
+        {renderSection('Horas Máximas a Acreditar', params.horasMaximas, 'access-time')}
+        {renderSection('Horario', params.horario, 'schedule')}
+        {renderSection('Contacto', params.contacto, 'contact-mail')}
+        {renderSection('Cupo', params.cupo, 'group')}
+        {renderSection('Clave', params.clave, 'vpn-key')}
+        {renderSection('CRN', params.crn, 'confirmation-number')}
+        {renderSection('Grupo', params.grupo, 'group-work')}
+        {renderSection('Organización', params.organizacion, 'business')}
+        {renderSection('ODS', params.ods, 'eco')}
+        {renderSection('Dirección / Ubicación', params.direccion, 'location-on')}
+        {renderSection('Ruta Desde el TEC', params.rutaDesdeTec, 'directions')}
+        {renderSection('KM de Distancia Desde el TEC', params.kmDistancia, 'straighten')}
+        {renderSection('Tipo de Horarios', params.tipoHorario, 'access-time')}
+        {renderSection('Población que se Atiende', params.poblacion, 'people')}
+        
+        {renderCollapsibleSection('Actividades a Realizar', params.actividades, 'list')}
+        {renderCollapsibleSection('Entregable', params.entregable, 'assignment')}
+        {renderCollapsibleSection('Notas Importantes', params.notas, 'note')}
+        
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Icon name="link" size={24} color="#4A90E2" />
+            <Text style={styles.label}>Link de Sitio Web</Text>
+          </View>
+          <TouchableOpacity onPress={() => Linking.openURL(params.linkWeb)} style={styles.linkButton}>
+            <Text style={styles.linkText}>Visitar sitio web</Text>
           </TouchableOpacity>
-
-        <Text style={styles.label}>Objetivo del Proyecto Solidario:</Text>
-        <Text style={styles.text}>{params.objetivo}</Text>
-
-        <Text style={styles.label}>Habilidades o Competencias Requeridas:</Text>
-        <Text style={styles.text}>{params.habilidades}</Text>
+        </View>
+        
+        {renderCollapsibleSection('Objetivo del Proyecto Solidario', params.objetivo, 'flag')}
+        {renderCollapsibleSection('Habilidades o Competencias Requeridas', params.habilidades, 'build')}
       </ScrollView>
+
+
     </SafeAreaView>
   );
 };
@@ -97,26 +95,65 @@ const OfferDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  backButton: {
     padding: 16,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: "#fff",
+    paddingHorizontal: 16,
+    color: '#333',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    marginHorizontal: 16,
+    elevation: 2,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   label: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
-    marginVertical: 8,
-    color: "#fff"
-    
+    marginLeft: 8,
+    color: '#333',
+    flex: 1,
   },
   text: {
-    fontSize: 19,
-    marginBottom: 16,
-    color: "#fff",
+    fontSize: 16,
+    color: '#666',
+  },
+  linkButton: {
+    backgroundColor: '#4A90E2',
+    padding: 12,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  linkText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  fab: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+    backgroundColor: '#4A90E2',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
   },
 });
 

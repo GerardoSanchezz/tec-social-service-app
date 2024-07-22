@@ -87,6 +87,7 @@ const Home = () => {
         data={filteredData}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
+        contentContainerStyle={{ paddingHorizontal: 10 }}
         ListHeaderComponent={ // El fix solo era quitar la funcion de flecha de estos componentes, no entiendo porque pero funciona ahora
           <View className="flex my-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
