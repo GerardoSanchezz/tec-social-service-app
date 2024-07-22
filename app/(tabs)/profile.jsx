@@ -1,52 +1,87 @@
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons';
 
-import { icons } from "../../constants";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { InfoBox } from "../../components";
 
 const Profile = () => {
   const { user, logout } = useGlobalContext();
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <View className="w-full flex justify-center items-center mt-6 mb-12 px-4">
-        <TouchableOpacity
-          onPress={logout} 
-          className="flex w-full items-end mb-10"
-        >
-          <Image
-            source={icons.logout}
-            resizeMode="contain"
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        onPress={logout} 
+        style={styles.logoutButton}
+      >
+        <MaterialIcons name="logout" size={24} color="#FF6347" />
+        <Text style={styles.logoutText}>Logout</Text>
+      </TouchableOpacity>
 
-        <View className="w-16 h-16 border border-secondary rounded-lg flex justify-center items-center">
+      <View style={styles.profileContainer}>
+        <View style={styles.avatarContainer}>
           <Image
-            source={{ uri: user?.avatar }}
-            className="w-[90%] h-[90%] rounded-lg"
+            source={require('../../assets/images/borregos-blue.png')}
+            style={styles.avatar}
             resizeMode="cover"
           />
         </View>
 
-        <InfoBox
-          title={user?.username}
-          containerStyles="mt-5"
-          titleStyles="text-lg"
-        />
-
-        <View className="mt-5 flex flex-row">
-          <InfoBox
-            title={user?.email}
-            subtitle="Correo"
-            titleStyles="text-sm"
-            containerStyles="mr-17"
-          />
-        </View>
+        <Text style={styles.username}>{user?.username}</Text>
+        <Text style={styles.email}>{user?.email}</Text>
       </View>
     </SafeAreaView>
   );
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#161622', 
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    padding: 20,
+    marginTop: 10,
+    marginRight: 10,
+  },
+  logoutText: {
+    color: '#FF6347',
+    marginLeft: 5,
+    fontSize: 16,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingTop: 150,
+  },
+  avatarContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: '#4A90E2',
+    overflow: 'hidden',
+    marginBottom: 20,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+  },
+  username: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 5,
+  },
+  email: {
+    fontSize: 16,
+    color: '#B0B0B0',
+    marginBottom: 20,
+  },
+});
 
 export default Profile;
