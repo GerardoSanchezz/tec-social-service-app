@@ -21,6 +21,7 @@ const Home = () => {
   const renderItem = ({ item, index }) => (
     <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
       <OffersCard
+        _id={item["_id"]}
         nombreProyecto={item["NOMBRE DEL PROYECTO"]}
         modalidad={item["MODALIDAD"]}
         carrerasPreferenciales={item["CARRERAS PREFERENCIALES"]}
@@ -28,6 +29,22 @@ const Home = () => {
         horario={item["HORARIO"]}
         contacto={item["DATOS DE CONTACTO CON LA OSF"]}
         cupo={item["CUPO DE ESTUDIANTES"]}
+        clave={item["CLAVE"]}
+        crn={item["CRN"]}
+        grupo={item["GRUPO"]}
+        organizacion={item["ORGANIZACIÓN SOCIO FORMADORA"]}
+        ods={item["ODS que atiende"]}
+        direccion={item["DIRECCIÓN / UBICACIÓN"]}
+        rutaDesdeTec={item["RUTA DESDE EL TEC"]}
+        kmDistancia={item["KM de distancia desde el TEC"]}
+        tipoHorario={item["Tipo de horarios"]}
+        poblacion={item["POBLACIÓN QUE SE ATIENDE"]}
+        actividades={item["ACTIVIDADES A REALIZAR"]}
+        entregable={item["ENTREGABLE"]}
+        notas={item["NOTAS IMPORTANTES"]}
+        linkWeb={item["Link de sitio web de la OSF"]}
+        objetivo={item["Objetivo del Proyecto Solidario (El objetivo es el cambio deseado que se quiere lograr con el proyecto solidario respecto al problema identificado)"]}
+        habilidades={item["Habilidades o competencias que el alumno requiere para participar en el proyecto: "]}
       />
     </Animated.View>
   );

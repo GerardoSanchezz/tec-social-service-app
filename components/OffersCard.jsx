@@ -2,23 +2,99 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
-const OffersCard = ({ 
-  nombreProyecto, 
-  modalidad, 
-  carrerasPreferenciales, 
-  horasMaximas, 
-  horario, 
-  contacto, 
-  cupo 
+const OffersCard = ({
+  _id,
+  nombreProyecto,
+  modalidad,
+  carrerasPreferenciales,
+  horasMaximas,
+  horario,
+  contacto,
+  cupo,
+  clave,
+  crn,
+  grupo,
+  organizacion,
+  ods,
+  direccion,
+  rutaDesdeTec,
+  kmDistancia,
+  tipoHorario,
+  poblacion,
+  actividades,
+  entregable,
+  notas,
+  linkWeb,
+  objetivo,
+  habilidades,
 }) => {
+  const router = useRouter();
+
+  const handlePress = () => {
+    console.log({
+      _id,
+      clave,
+      crn,
+      grupo,
+      organizacion,
+      nombreProyecto,
+      ods,
+      horasMaximas,
+      carrerasPreferenciales,
+      modalidad,
+      direccion,
+      rutaDesdeTec,
+      kmDistancia,
+      horario,
+      tipoHorario,
+      poblacion,
+      actividades,
+      entregable,
+      contacto,
+      cupo,
+      notas,
+      linkWeb,
+      objetivo,
+      habilidades,
+    });
+    
+    router.push({
+      pathname: '/offer-details',
+      params: {
+        _id,
+        clave,
+        crn,
+        grupo,
+        organizacion,
+        nombreProyecto,
+        ods,
+        horasMaximas,
+        carrerasPreferenciales,
+        modalidad,
+        direccion,
+        rutaDesdeTec,
+        kmDistancia,
+        horario,
+        tipoHorario,
+        poblacion,
+        actividades,
+        entregable,
+        contacto,
+        cupo,
+        notas,
+        linkWeb,
+        objetivo,
+        habilidades,
+      },
+    });
+  };
+
   return (
     <View className="relative flex flex-col items-center justify-center px-4 mb-14 border border-gray-300 rounded-lg p-4 bg-gray-900">
-       <View style={styles.deleteButtonWrapper}>
-        <LinearGradient
-          colors={['#ffffff', '#e0f7fa']} 
-          style={styles.gradientButtonDelete}
-        >
+      <View style={styles.deleteButtonWrapper}>
+        <LinearGradient colors={['#ffffff', '#e0f7fa']} style={styles.gradientButtonDelete}>
           <TouchableOpacity style={styles.buttonDelete}>
             <Entypo name="circle-with-minus" size={24} color="black" />
           </TouchableOpacity>
@@ -26,12 +102,9 @@ const OffersCard = ({
       </View>
 
       <View style={styles.buttonWrapper}>
-        <LinearGradient
-          colors={['#ffffff', '#e0f7fa']} 
-          style={styles.gradientButtonSave}
-        >
+        <LinearGradient colors={['#ffffff', '#e0f7fa']} style={styles.gradientButtonSave}>
           <TouchableOpacity style={styles.buttonSave}>
-          <Entypo name="bookmark" size={24} color="black" />
+            <Entypo name="bookmark" size={24} color="black" />
           </TouchableOpacity>
         </LinearGradient>
       </View>
@@ -61,12 +134,9 @@ const OffersCard = ({
             <Text className="font-bold">Cupo:</Text> {cupo}
           </Text>
         </View>
-        
-        <LinearGradient
-          colors={['#ffffff', '#e0f7fa']} 
-          style={styles.gradientButtonComplete}
-        >
-          <TouchableOpacity style={styles.buttonComplete}>
+
+        <LinearGradient colors={['#ffffff', '#e0f7fa']} style={styles.gradientButtonComplete}>
+          <TouchableOpacity style={styles.buttonComplete} onPress={handlePress}>
             <Text style={styles.buttonText}>Ver Oferta Completa 🧐</Text>
           </TouchableOpacity>
         </LinearGradient>
