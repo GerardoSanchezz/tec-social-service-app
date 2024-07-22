@@ -16,8 +16,8 @@ const OfferDetails = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <SafeAreaView className="bg-primary h-full p-3" >
+      <ScrollView >
         <Text style={styles.title}>Detalles de la Oferta</Text>
         <Text style={styles.label}>Nombre del Proyecto:</Text>
         <Text style={styles.text}>{params.nombreProyecto}</Text>
@@ -102,15 +102,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: "#fff"
   },
   label: {
     fontSize: 16,
     fontWeight: '600',
     marginVertical: 8,
+    color: "#fff"
+    
   },
   text: {
     fontSize: 16,
     marginBottom: 16,
+    color: "#fff",
   },
 });
 

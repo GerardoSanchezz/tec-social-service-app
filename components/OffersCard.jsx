@@ -94,7 +94,7 @@ const OffersCard = ({
   return (
     <View className="relative flex flex-col items-center justify-center px-4 mb-14 border border-gray-300 rounded-lg p-4 bg-gray-900">
       <View style={styles.deleteButtonWrapper}>
-        <LinearGradient colors={['#ffffff', '#e0f7fa']} style={styles.gradientButtonDelete}>
+        <LinearGradient colors={['#ff6600', '#FF9001']} style={styles.gradientButtonDelete}>
           <TouchableOpacity style={styles.buttonDelete}>
             <Entypo name="circle-with-minus" size={24} color="black" />
           </TouchableOpacity>
@@ -102,42 +102,42 @@ const OffersCard = ({
       </View>
 
       <View style={styles.buttonWrapper}>
-        <LinearGradient colors={['#ffffff', '#e0f7fa']} style={styles.gradientButtonSave}>
+        <LinearGradient colors={['#ff6600', '#FF9001']} style={styles.gradientButtonSave}>
           <TouchableOpacity style={styles.buttonSave}>
             <Entypo name="bookmark" size={24} color="black" />
           </TouchableOpacity>
         </LinearGradient>
       </View>
 
-      <View className="flex flex-col items-center mt-12">
+      <View className="flex flex-col items-center">
         <Text className="font-semibold text-lg text-white text-center" numberOfLines={1}>
           {nombreProyecto}
         </Text>
 
         <View className="w-full flex flex-col items-center mt-3 space-y-2">
-          <Text className="text-sm text-white text-center">
+          <Text className="text-base text-white text-center">
             <Text className="font-bold">Modalidad:</Text> {modalidad}
           </Text>
-          <Text className="text-sm text-white text-center">
+          <Text className="text-base text-white text-center">
             <Text className="font-bold">Carreras Preferenciales:</Text> {carrerasPreferenciales}
           </Text>
-          <Text className="text-sm text-white text-center">
+          <Text className="text-base text-white text-center">
             <Text className="font-bold">Horas Máximas a Acreditar:</Text> {horasMaximas}
           </Text>
-          <Text className="text-sm text-white text-center">
+          <Text className="text-base text-white text-center">
             <Text className="font-bold">Horario:</Text> {horario}
           </Text>
-          <Text className="text-sm text-white text-center">
-            <Text className="font-bold">Contacto:</Text> {contacto}
-          </Text>
-          <Text className="text-sm text-white text-center">
+          {/* <Text className="text-base	 text-white text-center">
+    <Text className="font-bold">Contacto:</Text> {contacto}
+</Text> */}
+          <Text className="text-base text-white text-center">
             <Text className="font-bold">Cupo:</Text> {cupo}
           </Text>
         </View>
 
-        <LinearGradient colors={['#ffffff', '#e0f7fa']} style={styles.gradientButtonComplete}>
+        <LinearGradient colors={['#ff6600', '#FF9001']} style={styles.gradientButtonComplete}>
           <TouchableOpacity style={styles.buttonComplete} onPress={handlePress}>
-            <Text style={styles.buttonText}>Ver Oferta Completa 🧐</Text>
+            <Text style={styles.buttonText}>Ver Oferta Completa</Text>
           </TouchableOpacity>
         </LinearGradient>
       </View>
@@ -148,8 +148,8 @@ const OffersCard = ({
 const styles = StyleSheet.create({
   deleteButtonWrapper: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    bottom: 10,
+    left: 10,
   },
   gradientButtonDelete: {
     borderRadius: 50,
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     position: 'absolute',
-    top: 10,
-    left: 10,
+    bottom: 10,
+    right: 10,
     zIndex: 1, 
   },
   gradientButtonSave: {
@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
