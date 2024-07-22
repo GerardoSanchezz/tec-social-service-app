@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -80,7 +80,9 @@ const OfferDetails = () => {
         <Text style={styles.text}>{params.notas}</Text>
 
         <Text style={styles.label}>Link de Sitio Web:</Text>
-        <Text style={styles.text}>{params.linkWeb}</Text>
+          <TouchableOpacity onPress={() => Linking.openURL(params.linkWeb)}>
+            <Text style={[styles.text, { color: '#B2CAFC' }]}>{params.linkWeb}</Text>
+          </TouchableOpacity>
 
         <Text style={styles.label}>Objetivo del Proyecto Solidario:</Text>
         <Text style={styles.text}>{params.objetivo}</Text>
@@ -99,20 +101,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: "#fff"
+    color: "#fff",
   },
   label: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '600',
     marginVertical: 8,
     color: "#fff"
     
   },
   text: {
-    fontSize: 16,
+    fontSize: 19,
     marginBottom: 16,
     color: "#fff",
   },
