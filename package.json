@@ -38,6 +38,7 @@
     "react-native": "^0.74.2",
     "react-native-animatable": "^1.4.0",
     "react-native-appwrite": "^0.2.2",
+    "react-native-blur": "^3.2.2",
     "react-native-feather": "^1.1.2",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-linear-gradient": "^2.8.3",
@@ -47,7 +48,8 @@
     "react-native-screens": "3.31.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.10",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "expo-blur": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
