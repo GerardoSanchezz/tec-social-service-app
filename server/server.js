@@ -178,6 +178,34 @@ client.connect().then(() => {
         }
     });
 
+    // Endpoint para eliminar una oferta de los favoritos del usuario
+    app.post('/api/users/remove-favorite', async (req, res) => {
+        try {
+            const { userId, offerId } = req.body;
+
+            if (!ObjectId.isValid(userId)) {
+                return res.status(400).json({ success: false, message: "Invalid userId" });
+            }
+
+            const collection = db.collection("users");
+
+            const result = await collection.updateOne(
+                { _id: new ObjectId(userId) },
+                { $pull: { favoriteOffers: offerId } } // Eliminar offerId del array favoriteOffers
+            );
+
+            if (result.modifiedCount > 0) {
+                res.status(200).json({ success: true, message: "Offer removed from favorites." });
+            } else {
+                res.status(404).json({ success: false, message: "User not found or offer not in favorites." });
+            }
+        } catch (error) {
+            console.error("Error removing favorite offer:", error);
+            res.status(500).json({ success: false, message: "Internal Server Error" });
+        }
+    });
+    
+
     // Start the server
     app.listen(port, () => {
         console.log(`Server running on http://localhost:${port}`);

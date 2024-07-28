@@ -43,7 +43,7 @@ const Mis_Ofertas = () => {
     if (user?.id) {
       const intervalId = setInterval(() => {
         fetchFavoriteOffers();
-      }, 10000);
+      }, 1000);
 
       return () => clearInterval(intervalId); 
     }

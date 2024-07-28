@@ -91,6 +91,25 @@ const OffersCard = ({
     }
   };
 
+  const handleRemoveOffer = async () => {
+    try {
+      const response = await axios.post('http://192.168.100.15:3000/api/users/remove-favorite', {
+        userId: user?.id,
+        offerId: _id,
+      });
+      if (response.data.success) {
+        alert('Offer removed from favorites!');
+        // Aquí puedes actualizar el estado en el componente padre para reflejar la eliminación
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error removing offer from favorites.');
+    }
+  };
+  
+
   return (
     <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
       <LinearGradient
@@ -103,7 +122,7 @@ const OffersCard = ({
             <TouchableOpacity style={styles.actionButton} onPress={handleSaveOffer}>
               <Entypo name="bookmark" size={24} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={handleRemoveOffer}>
               <Entypo name="circle-with-minus" size={24} color="#fff" />
             </TouchableOpacity>
           </View>
