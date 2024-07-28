@@ -11,9 +11,9 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState(data);
-  const [filterCriteria] = useState(["NOMBRE DEL PROYECTO", "MODALIDAD", "CARRERAS PREFERENCIALES", "HORAS MÁXIMAS A ACREDITAR", "HORARIO", "CUPO DE ESTUDIANTES"]); // Add more criteria as needed
+  const [filterCriteria] = useState(["NOMBRE DEL PROYECTO", "MODALIDAD", "CARRERAS PREFERENCIALES", "HORAS MÁXIMAS A ACREDITAR", "HORARIO", "CUPO DE ESTUDIANTES"]);
   const [selectedFilter, setSelectedFilter] = useState(filterCriteria[0]);
-  
+
 
   //console.log("Data in Home component:", data); // Log data to ensure it's being received
 
@@ -26,9 +26,9 @@ const Home = () => {
   useEffect(() => {
     if (searchQuery) {
       if (selectedFilter === "CUPO DE ESTUDIANTES") {
-        const filtered = data.filter(item => item[selectedFilter] <= parseInt(searchQuery)); // El cupo se busca de menor o igual a la query
+        const filtered = data.filter(item => item[selectedFilter] <= parseInt(searchQuery));
         setFilteredData(filtered);
-      }else{
+      } else {
         const lowercasedQuery = searchQuery?.toLowerCase();
         const filtered = data.filter(item =>
           item[selectedFilter]?.toLowerCase().includes(lowercasedQuery)
@@ -47,7 +47,6 @@ const Home = () => {
   const handleFilterChange = (newFilter) => {
     setSelectedFilter(newFilter);
   };
-
 
   const renderItem = ({ item, index }) => (
     <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
@@ -76,10 +75,11 @@ const Home = () => {
         linkWeb={item["Link de sitio web de la OSF"]}
         objetivo={item["Objetivo del Proyecto Solidario (El objetivo es el cambio deseado que se quiere lograr con el proyecto solidario respecto al problema identificado)"]}
         habilidades={item["Habilidades o competencias que el alumno requiere para participar en el proyecto: "]}
+        userId={user?.id}
       />
     </Animated.View>
   );
-
+  // console.log("userId--->", user?.id);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -88,7 +88,7 @@ const Home = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
         contentContainerStyle={{ paddingHorizontal: 10 }}
-        ListHeaderComponent={ // El fix solo era quitar la funcion de flecha de estos componentes, no entiendo porque pero funciona ahora
+        ListHeaderComponent={
           <View className="flex my-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
               <View>
