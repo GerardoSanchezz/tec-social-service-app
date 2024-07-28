@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import axios from 'axios';
+import { useGlobalContext } from '../context/GlobalProvider';
 
 const OffersCard = ({
   _id,
@@ -69,6 +71,25 @@ const OffersCard = ({
       });
     });
   };
+  const { user } = useGlobalContext();
+  const handleSaveOffer = async () => {
+    try {
+      console.log(user?.id);
+      console.log(_id);
+      const response = await axios.post('http://192.168.100.15:3000/api/users/favorite', {
+        userId: user?.id,
+        offerId: _id 
+      });
+      if (response.data.success) {
+        alert('Offer added to favorites!');
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error adding offer to favorites.');
+    }
+  };
 
   return (
     <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
@@ -79,7 +100,7 @@ const OffersCard = ({
         <View style={styles.header}>
           <Text style={styles.title} numberOfLines={2}>{nombreProyecto}</Text>
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={handleSaveOffer}>
               <Entypo name="bookmark" size={24} color="#fff" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
