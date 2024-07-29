@@ -45,9 +45,9 @@ const OfferDetails = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#4A90E2" />
+      <ScrollView style={styles.scrollView}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Icon name="arrow-back" size={24} color="#FFFFFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Detalles de la Oferta</Text>
         
@@ -86,8 +86,6 @@ const OfferDetails = () => {
         {renderCollapsibleSection('Objetivo del Proyecto Solidario', params.objetivo, 'flag')}
         {renderCollapsibleSection('Habilidades o Competencias Requeridas', params.habilidades, 'build')}
       </ScrollView>
-
-
     </SafeAreaView>
   );
 };
@@ -95,7 +93,10 @@ const OfferDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#161622',
+  },
+  scrollView: {
+    flex: 1,
   },
   backButton: {
     padding: 16,
@@ -105,15 +106,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     paddingHorizontal: 16,
-    color: '#333',
+    color: '#FFFFFF',
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1E1E2E', // Slightly lighter than the background for contrast
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
     marginHorizontal: 16,
-    elevation: 2,
+    borderColor: '#2A2A3A', // Subtle border for definition
+    borderWidth: 1,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -121,15 +123,15 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   label: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     marginLeft: 8,
-    color: '#333',
+    color: '#FFFFFF',
     flex: 1,
   },
   text: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: 18,
+    color: '#E0E0E0', // Lighter color for better readability on dark background
   },
   linkButton: {
     backgroundColor: '#4A90E2',
