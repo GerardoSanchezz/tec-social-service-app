@@ -4,8 +4,9 @@ import { Image, RefreshControl, Text, View } from "react-native";
 import Animated, { FadeIn } from 'react-native-reanimated';
 import axios from 'axios';
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { EmptyState, OffersCard } from "../../components";
+import { EmptyState, FavOffersCard } from "../../components";
 import { images } from "../../constants";
+
 
 const Mis_Ofertas = () => {
   const { user } = useGlobalContext();
@@ -51,7 +52,7 @@ const Mis_Ofertas = () => {
 
   const renderItem = ({ item, index }) => (
     <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
-      <OffersCard
+      <FavOffersCard
         _id={item["_id"]}
         nombreProyecto={item["NOMBRE DEL PROYECTO"]}
         modalidad={item["MODALIDAD"]}
