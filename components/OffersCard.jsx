@@ -5,6 +5,8 @@ import { Entypo, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { useGlobalContext } from '../context/GlobalProvider';
+import Toast from './Toast';
+import { useState } from 'react';
 
 const OffersCard = ({
   _id,
@@ -72,6 +74,16 @@ const OffersCard = ({
     });
   };
   const { user } = useGlobalContext();
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
+
+  const showToast = (message, type = 'success') => {
+    setToastMessage(message);
+    setToastVisible(true);
+    setToastType(type);
+  };
+
   const handleSaveOffer = async () => {
     try {
       console.log(user?.id);
@@ -81,39 +93,28 @@ const OffersCard = ({
         offerId: _id 
       });
       if (response.data.success) {
-        alert('Offer added to favorites!');
+        showToast('Oferta añadida a favoritos.', 'success');
       } else {
-        alert(response.data.message);
+        showToast(response.data.message, 'error');
       }
     } catch (error) {
-      console.error(error);
-      alert('Error adding offer to favorites.');
-    }
-  };
-
-  const handleRemoveOffer = async () => {
-    try {
-      const response = await axios.post('http://192.168.100.15:3000/api/users/remove-favorite', {
-        userId: user?.id,
-        offerId: _id,
-      });
-      if (response.data.success) {
-        alert('Offer removed from favorites!');
-        // Aquí puedes actualizar el estado en el componente padre para reflejar la eliminación
-      } else {
-        alert(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      alert('Error removing offer from favorites.');
+      // console.error("Error saving offer:", error);
+      showToast('¡Ya tienes esta oferta en tus favoritos!', 'error');
     }
   };
   
 
   return (
+    <View style={styles.container}>
+    <Toast 
+      message={toastMessage} 
+      isVisible={toastVisible} 
+      onHide={() => setToastVisible(false)}
+      type={toastType}
+    />
     <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
       <LinearGradient
-        colors={['#1e3a8a', '#3b82']}
+        colors={['#172554', '#0d9488']}
         style={styles.gradient}
       >
         <View style={styles.header}>
@@ -121,9 +122,6 @@ const OffersCard = ({
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.actionButton} onPress={handleSaveOffer}>
               <Entypo name="bookmark" size={24} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton} onPress={handleRemoveOffer}>
-              <Entypo name="circle-with-minus" size={24} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
@@ -157,10 +155,15 @@ const OffersCard = ({
         </TouchableOpacity>
       </LinearGradient>
     </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+    marginBottom: 20,
+  },
   card: {
     marginBottom: 20,
     borderRadius: 15,
