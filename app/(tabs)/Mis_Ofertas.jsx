@@ -6,8 +6,7 @@ import axios from 'axios';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { EmptyState, FavOffersCard } from "../../components";
 import { images } from "../../constants";
-import { useFocusEffect } from "expo-router";
-
+import { useFocusEffect } from '@react-navigation/native';
 
 const Mis_Ofertas = () => {
   const { user } = useGlobalContext();
@@ -35,12 +34,6 @@ const Mis_Ofertas = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     fetchFavoriteOffers();
-  //   }
-  // }, [user]);
-
   useFocusEffect(
     useCallback(() => {
       if (user?.id) {
@@ -49,15 +42,9 @@ const Mis_Ofertas = () => {
     }, [user])
   );
 
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     const intervalId = setInterval(() => {
-  //       fetchFavoriteOffers();
-  //     }, 1000);
-
-  //     return () => clearInterval(intervalId); 
-  //   }
-  // }, [user]);
+  const handleRemoveAndRefresh = () => {
+    fetchFavoriteOffers();
+  };
 
   const renderItem = ({ item, index }) => (
     <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
@@ -87,6 +74,7 @@ const Mis_Ofertas = () => {
         objetivo={item["Objetivo del Proyecto Solidario (El objetivo es el cambio deseado que se quiere lograr con el proyecto solidario respecto al problema identificado)"]}
         habilidades={item["Habilidades o competencias que el alumno requiere para participar en el proyecto: "]}
         userId={user?.id}
+        onRemoveOffer={handleRemoveAndRefresh}
       />
     </Animated.View>
   );
@@ -106,8 +94,8 @@ const Mis_Ofertas = () => {
                   Mis Ofertas 
                 </Text>
                 <Text className="font-pmedium text-base text-gray-300 mt-2">
-            {favoriteOffers.length} ofertas guardadas
-          </Text>
+                  {favoriteOffers.length} ofertas guardadas
+                </Text>
               </View>
               <View className="mt-1.5">
                 <Image

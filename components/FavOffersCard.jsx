@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useGlobalContext } from '../context/GlobalProvider';
 import Toast from './Toast';
 import { useState } from 'react';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
 const FavOffersCard = ({
   _id,
@@ -33,9 +34,11 @@ const FavOffersCard = ({
   linkWeb,
   objetivo,
   habilidades,
+  onRemoveOffer,
 }) => {
   const router = useRouter();
   const scaleValue = new Animated.Value(1);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   const handlePress = () => {
     Animated.sequence([
@@ -73,88 +76,100 @@ const FavOffersCard = ({
       });
     });
   };
+
   const { user } = useGlobalContext();
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState('success');
 
-
   const showToast = (message, type = 'success') => {
     setToastMessage(message);
     setToastVisible(true);
     setToastType(type);
+    setTimeout(() => {
+      setToastVisible(false);
+    }, 1000); 
   };
 
   const handleRemoveOffer = async () => {
-    try {
-      const response = await axios.post('http://192.168.100.15:3000/api/users/remove-favorite', {
-        userId: user?.id,
-        offerId: _id,
-      });
-      if (response.data.success) {
-        showToast('Oferta eliminada de favoritos.', 'success');
-        // Aquí puedes actualizar el estado en el componente padre para reflejar la eliminación
-      } else {
-        showToast(response.data.message, 'error');
+    setIsRemoving(true); 
+    setTimeout(async () => {
+      try {
+        const response = await axios.post('http://192.168.100.15:3000/api/users/remove-favorite', {
+          userId: user?.id,
+          offerId: _id,
+        });
+        if (response.data.success) {
+          showToast('Oferta eliminada de favoritos.', 'success');
+          setTimeout(() => {
+            onRemoveOffer(); 
+          }, 700); 
+        } else {
+          showToast(response.data.message, 'error');
+        }
+      } catch (error) {
+        showToast('Error al eliminar la oferta de favoritos.', 'error');
+      } finally {
+        setIsRemoving(true); 
       }
-    } catch (error) {
-      // console.error(error);
-      showToast('Error al eliminar la oferta de favoritos.', 'error');
-    }
+    }, 100); // Tiempo suficiente para que la animación de salida se complete
   };
-  
 
   return (
     <View style={styles.container}>
-        <Toast 
+      <Toast 
         message={toastMessage} 
         isVisible={toastVisible} 
         onHide={() => setToastVisible(false)}
         type={toastType}
-        />
-        <Animated.View style={[styles.card, { transform: [{ scale: scaleValue }] }]}>
+      />
+      <Animated.View
+        style={[styles.card, { transform: [{ scale: scaleValue }] }]}
+        entering={FadeIn.delay(200)}
+        exiting={FadeOut}
+      >
         <LinearGradient
-            colors={['#b45309', '#fda94e']}
-            style={styles.gradient}
+          colors={['#b45309', '#fda94e']}
+          style={styles.gradient}
         >
-            <View style={styles.header}>
+          <View style={styles.header}>
             <Text style={styles.title} numberOfLines={2}>{nombreProyecto}</Text>
             <View style={styles.actionButtons}>
-                <TouchableOpacity style={styles.actionButton} onPress={handleRemoveOffer}>
+              <TouchableOpacity style={styles.actionButton} onPress={handleRemoveOffer}>
                 <Entypo name="circle-with-minus" size={24} color="#fff" />
-                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
-            </View>
+          </View>
 
-            <View style={styles.content}>
+          <View style={styles.content}>
             <View style={styles.infoRow}>
-                <MaterialIcons name="school" size={20} color="#fff" />
-                <Text style={styles.infoText}>{modalidad}</Text>
-            </View>
-            <View style={styles.infoRow}>
-                <MaterialIcons name="engineering" size={20} color="#fff" />
-                <Text style={styles.infoText} numberOfLines={1}>{carrerasPreferenciales}</Text>
+              <MaterialIcons name="school" size={20} color="#fff" />
+              <Text style={styles.infoText}>{modalidad}</Text>
             </View>
             <View style={styles.infoRow}>
-                <MaterialIcons name="access-time" size={20} color="#fff" />
-                <Text style={styles.infoText}>{horasMaximas} horas</Text>
+              <MaterialIcons name="engineering" size={20} color="#fff" />
+              <Text style={styles.infoText} numberOfLines={1}>{carrerasPreferenciales}</Text>
             </View>
             <View style={styles.infoRow}>
-                <FontAwesome5 name="calendar-alt" size={20} color="#fff" />
-                <Text style={styles.infoText}>{horario}</Text>
+              <MaterialIcons name="access-time" size={20} color="#fff" />
+              <Text style={styles.infoText}>{horasMaximas} horas</Text>
             </View>
             <View style={styles.infoRow}>
-                <MaterialIcons name="group" size={20} color="#fff" />
-                <Text style={styles.infoText}>Cupo: {cupo}</Text>
+              <FontAwesome5 name="calendar-alt" size={20} color="#fff" />
+              <Text style={styles.infoText}>{horario}</Text>
             </View>
+            <View style={styles.infoRow}>
+              <MaterialIcons name="group" size={20} color="#fff" />
+              <Text style={styles.infoText}>Cupo: {cupo}</Text>
             </View>
+          </View>
 
-            <TouchableOpacity style={styles.detailsButton} onPress={handlePress}>
+          <TouchableOpacity style={styles.detailsButton} onPress={handlePress}>
             <Text style={styles.detailsButtonText}>Ver Oferta Completa</Text>
             <MaterialIcons name="arrow-forward" size={24} color="#fff" />
-            </TouchableOpacity>
+          </TouchableOpacity>
         </LinearGradient>
-        </Animated.View>
+      </Animated.View>
     </View>
   );
 };
