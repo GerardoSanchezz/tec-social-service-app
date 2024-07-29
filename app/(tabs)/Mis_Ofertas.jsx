@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image, RefreshControl, Text, View } from "react-native";
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { EmptyState, FavOffersCard } from "../../components";
 import { images } from "../../constants";
+import { useFocusEffect } from "expo-router";
 
 
 const Mis_Ofertas = () => {
@@ -34,21 +35,29 @@ const Mis_Ofertas = () => {
     }
   };
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchFavoriteOffers();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     fetchFavoriteOffers();
+  //   }
+  // }, [user]);
 
-  useEffect(() => {
-    if (user?.id) {
-      const intervalId = setInterval(() => {
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) {
         fetchFavoriteOffers();
-      }, 1000);
+      }
+    }, [user])
+  );
 
-      return () => clearInterval(intervalId); 
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     const intervalId = setInterval(() => {
+  //       fetchFavoriteOffers();
+  //     }, 1000);
+
+  //     return () => clearInterval(intervalId); 
+  //   }
+  // }, [user]);
 
   const renderItem = ({ item, index }) => (
     <Animated.View entering={FadeIn.delay(index * 200)} key={index}>
